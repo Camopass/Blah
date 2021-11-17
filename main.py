@@ -6,12 +6,15 @@ from Engine import LevelRendering
 from Engine.Entity import Entity
 from Engine.EntityManager import EntityManager
 from Engine.ObjectManager import ObjectManager
+from Engine.UserInterface import UIElement
 from Engine.Window import Window
 from Player import Player
 
 pygame.init()
 
 pygame.joystick.init()
+
+player_level = ()
 
 window = Window(1600, 960, "Slimey Man go wee wooo")
 
@@ -36,6 +39,9 @@ joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_coun
 use_gamepad = True if len(joysticks) > 0 else False  # TODO: Make this stupid script better
 
 debug_screen = DebugScreen(window, 900, 10, 275, 700, 'Debug Screen', entity_manager)
+
+ui = UIElement(pygame.image.load("assets/UI/Button.png").convert_alpha()).render(2, 2)
+ui_im = pygame.transform.scale(ui, (ui.get_width() * 10, ui.get_height() * 10))
 
 
 def do_input(controlled_player):
@@ -106,6 +112,8 @@ def main():
             debug_screen.render()
             window.screen.blit(font.render(f'FPS: {fps}', False, [255, 255, 255]), (10, 10))
             pygame.draw.rect(window.screen, (255, 255, 255), player.rect, 2)
+
+            window.screen.blit(ui_im, (500, 300))
 
             window.render()
             pygame.display.update()
