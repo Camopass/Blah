@@ -13,17 +13,30 @@ class Entity:
         self.image = image
         self.xvel = 0
         self.yvel = 0
-        self.x = 0
-        self.y = 0
+        self._x = 0
+        self._y = 0
         self.game_x, self.game_y = 0, 0
         self.z_override = z_override
         self.y_offset = 0
         self.x_offset = 0
         if image is not None:
             self.rect = pygame.Rect(self.x, self.y, self.image.get_width(), self.image.get_height())
-            self.rect.center = (self.x + self.image.get_width() / 2, self.y + self.image.get_height() / 2)
         else:
             self.rect = pygame.Rect(self.x, self.y, 1, 1)
+
+    def get_x(self):
+        return self._x
+
+    def set_x(self, a):
+        self._x = a
+        self.rect.x = a - self.image.get_width() / 2
+
+    def get_y(self):
+        return self._y
+
+    def set_y(self, a):
+        self._y = a
+        self.rect.y = a - self.image.get_height() / 2
 
     def update(self):
         if self.xvel != 0:
@@ -47,6 +60,9 @@ class Entity:
         w /= 2
         h /= 2
         self.x, self.y = x - h, y + w
+
+    x = property(get_x, set_x)
+    y = property(get_y, set_y)
 
 
 class Object(Entity):

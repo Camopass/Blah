@@ -2,10 +2,12 @@ import sys
 import pygame
 
 from DebugScreen import DebugScreen
+from Engine import LevelRendering
 from Engine.Entity import Entity
 from Engine.EntityManager import EntityManager
 from Engine.ObjectManager import ObjectManager
 from Engine.Window import Window
+from Player import Player
 
 pygame.init()
 
@@ -18,7 +20,7 @@ background = pygame.transform.scale(bg, (1600, 960))
 
 pt = pygame.image.load("assets/sprites/player/idle_01.png")
 player_tex = pygame.transform.scale2x(pt)
-player = Entity("Player", "main-player", player_tex)
+player = Player(player_tex)
 player.set_center(window.screen.get_width() / 2, window.screen.get_height() / 2)
 
 entity_manager = EntityManager(window.screen, player)
@@ -60,6 +62,9 @@ def do_input(controlled_player):
             debug_screen.toggle_open()
 
 
+level = LevelRendering.Level.load("Levels/Stuff.m2l", 32)
+
+
 def main():
     while True:
         for event in pygame.event.get():
@@ -96,9 +101,11 @@ def main():
             entity_manager.update()
             object_manager.update()
             window.screen.blit(background, (0, 0))
+            window.screen.blit(level.render(), (-player.game_x, -player.game_y))
             window.render_managers(entity_manager, object_manager)
             debug_screen.render()
             window.screen.blit(font.render(f'FPS: {fps}', False, [255, 255, 255]), (10, 10))
+            pygame.draw.rect(window.screen, (255, 255, 255), player.rect, 2)
 
             window.render()
             pygame.display.update()
