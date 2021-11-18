@@ -1,12 +1,14 @@
+import datetime
+import os
 import sys
 import pygame
 
 from DebugScreen import DebugScreen
 from Engine import LevelRendering
-from Engine.Entity import Entity
 from Engine.EntityManager import EntityManager
 from Engine.ObjectManager import ObjectManager
-from Engine.UserInterface import UIElement
+from Engine.Physics import collision_ground
+from Engine.UserInterface import Notice, Button
 from Engine.Window import Window
 from Player import Player
 
@@ -16,7 +18,7 @@ pygame.joystick.init()
 
 player_level = ()
 
-window = Window(1600, 960, "Slimey Man go wee wooo")
+window = Window(1600, 960, "Slimey Man go wee wooo", "assets/icons/16.png")
 
 bg = pygame.image.load("assets/Backgrounds/Testing.png")
 background = pygame.transform.scale(bg, (1600, 960))
@@ -24,7 +26,7 @@ background = pygame.transform.scale(bg, (1600, 960))
 pt = pygame.image.load("assets/sprites/player/idle_01.png")
 player_tex = pygame.transform.scale2x(pt)
 player = Player(player_tex)
-player.set_center(window.screen.get_width() / 2, window.screen.get_height() / 2)
+player.x, player.y = 800, 500
 
 entity_manager = EntityManager(window.screen, player)
 window.entity_manager = entity_manager
@@ -40,8 +42,13 @@ use_gamepad = True if len(joysticks) > 0 else False  # TODO: Make this stupid sc
 
 debug_screen = DebugScreen(window, 900, 10, 275, 700, 'Debug Screen', entity_manager)
 
-ui = UIElement(pygame.image.load("assets/UI/Button.png").convert_alpha()).render(2, 2)
-ui_im = pygame.transform.scale(ui, (ui.get_width() * 10, ui.get_height() * 10))
+ui_im = Notice(pygame.image.load("assets/UI/Button.png").convert_alpha(), 30, "I like cheese. Cheese is good. I really like cheese. Wow, cheese really is great. Cheese is poggers.").\
+    render(5, 2, font=font, scaling=10, padding=60)
+
+small = pygame.image.load("assets/UI/ButtonSmall.png").convert_alpha()
+hover = pygame.image.load("assets/UI/ButtonSmallHovered.png").convert_alpha()
+
+button = Button.uie_button(small, 9, 500, 300, 3, 5, hover, font, window, scaling=10, text="Hello!")
 
 
 def do_input(controlled_player):
@@ -76,7 +83,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                sys.exit()  # Get it? Sus?
+                sys.exit()
             if event.type == pygame.VIDEORESIZE:  # We do a little resizing
                 window.window_surface = pygame.display.set_mode(size=(event.w, event.h), flags=pygame.RESIZABLE)
                 window.update_resize()  # Set the scaling of the window screen
@@ -95,6 +102,9 @@ def main():
             if event.type == pygame.KEYDOWN:  # Fullscreen by pressing F11
                 if event.key == pygame.K_F11:
                     window.windowed() if window.is_fullscreen else window.fullscreen()
+                if event.key == pygame.K_F12:
+                    dir = os.environ["USERPROFILE"] + f"/Desktop/{datetime.date.today()}.png"
+                    pygame.image.save(window.screen, dir)
 
         if pygame.mouse.get_focused():
             window.screen.fill((0, 0, 0))
@@ -107,13 +117,15 @@ def main():
             entity_manager.update()
             object_manager.update()
             window.screen.blit(background, (0, 0))
-            window.screen.blit(level.render(), (-player.game_x, -player.game_y))
+            window.screen.blit(pygame.transform.scale2x(level.render()), (-player.game_x, -player.game_y))
             window.render_managers(entity_manager, object_manager)
             debug_screen.render()
             window.screen.blit(font.render(f'FPS: {fps}', False, [255, 255, 255]), (10, 10))
             pygame.draw.rect(window.screen, (255, 255, 255), player.rect, 2)
 
-            window.screen.blit(ui_im, (500, 300))
+            #print(collision_ground(player.rect, level, 2, (-player.game_x, -player.game_y), window))
+            # window.screen.blit(ui_im, (500, 300))
+            button.render(window.screen)
 
             window.render()
             pygame.display.update()

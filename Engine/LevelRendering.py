@@ -62,3 +62,8 @@ class Level:
         l.piece_dict = true_data
         l.floor_pieces = map_data["LevelData"]
         return l
+
+    def get_null_tile(self):
+        for key, piece in self.piece_dict.items():
+            if piece is None:
+                return key, piece

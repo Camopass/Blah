@@ -10,7 +10,7 @@ from Engine.Maths import map_range
 
 
 class Window:
-    def __init__(self, width, height, caption: str = "PyGame Engine", icon=None):
+    def __init__(self, width, height, caption: str = "PyGame Engine", icon_path=None):
         self.window_surface = pygame.display.set_mode((width, height), pygame.RESIZABLE)  # This is the actual pygame surface
         self.screen = pygame.surface.Surface((width, height))  # This is the surface that you draw to
         self.target_width, self.target_height = width, height  # This is the width and height of the screen we resize it to
@@ -21,8 +21,8 @@ class Window:
         self.original_dimensions = width, height
         self.aspect_ratio_multiplier = height / width, width / height
         pygame.display.set_caption(caption)
-        if icon is not None:
-            pygame.display.set_icon(icon)
+        if icon_path is not None:
+            pygame.display.set_icon(pygame.image.load(icon_path).convert_alpha())
 
         self.left_click = False
         self.right_click = False
@@ -48,7 +48,7 @@ class Window:
             target_width = window_height * self.aspect_ratio_multiplier[1]
         if target_width is not None:
             target_height = target_width * self.aspect_ratio_multiplier[0]
-            resized_screen = pygame.transform.smoothscale(self.screen, (ceil(target_width), ceil(target_height)))
+            resized_screen = pygame.transform.scale(self.screen, (ceil(target_width), ceil(target_height)))
             self.target_width, self.target_height = target_width, target_height
 
         width = self.window_surface.get_width()
@@ -87,7 +87,7 @@ class Window:
     # Render the screen to the window using the positioning and resizing
     def render(self):
         self.window_surface.fill((0, 0, 0))
-        resized_screen = pygame.transform.smoothscale(self.screen, (ceil(self.target_width), ceil(self.target_height)))
+        resized_screen = pygame.transform.scale(self.screen, (ceil(self.target_width), ceil(self.target_height)))
         self.window_surface.blit(resized_screen, self.center_position)
 
     # We do a little rendering

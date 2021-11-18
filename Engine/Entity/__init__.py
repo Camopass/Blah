@@ -6,6 +6,9 @@ from Engine.Maths import Vec2
 
 
 class Entity:
+    """
+    An entity for the game. This manages velocity, position, textures, collision, and rendering.
+    """
     def __init__(self, name: str, id: str, image: pygame.image = None, *, z_override: int = None):
         self.name = name
         self.id = id
@@ -24,17 +27,21 @@ class Entity:
         else:
             self.rect = pygame.Rect(self.x, self.y, 1, 1)
 
-    def get_x(self):
+    @property
+    def x(self):
         return self._x
 
-    def set_x(self, a):
+    @x.setter
+    def x(self, a):
         self._x = a
         self.rect.x = a - self.image.get_width() / 2
 
-    def get_y(self):
+    @property
+    def y(self):
         return self._y
 
-    def set_y(self, a):
+    @y.setter
+    def y(self, a):
         self._y = a
         self.rect.y = a - self.image.get_height() / 2
 
@@ -53,16 +60,7 @@ class Entity:
         pass
 
     def render(self, screen):
-        screen.blit(self.image, (self.x + self.x_offset - 64, self.y + self.y_offset - 64))
-
-    def set_center(self, x, y):
-        w, h = self.image.get_width(), self.image.get_height()
-        w /= 2
-        h /= 2
-        self.x, self.y = x - h, y + w
-
-    x = property(get_x, set_x)
-    y = property(get_y, set_y)
+        screen.blit(self.image, (self.x - self.rect.w / 2, self.y - self.rect.h / 2))
 
 
 class Object(Entity):

@@ -3,8 +3,6 @@ import pygame
 from Engine.EntityManager import EntityManager
 from Engine.Window import Window
 
-# In-Game screen
-
 
 class Screen:
     def __init__(self, window: Window, x: float, y: float, width: float, height: float):
