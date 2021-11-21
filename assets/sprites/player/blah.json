@@ -1,0 +1,27 @@
+﻿{"frames": {
+
+"idle instance 10000":
+{
+	"frame": {"x":0,"y":0,"w":50,"h":57},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":50,"h":58},
+	"sourceSize": {"w":50,"h":58}
+},
+"idle instance 10001":
+{
+	"frame": {"x":50,"y":0,"w":50,"h":57},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":58},
+	"sourceSize": {"w":50,"h":58}
+}},
+"meta": {
+	"app": "Adobe Animate",
+	"version": "22.0.0.93",
+	"image": "blah.png",
+	"format": "RGBA8888",
+	"size": {"w":128,"h":64},
+	"scale": "1"
+}
+}
