@@ -22,7 +22,7 @@ window = Window(1600, 960, "Slimey Man go wee wooo", "assets/icons/16.png")
 bg = pygame.image.load("assets/Backgrounds/Testing.png")
 background = pygame.transform.scale(bg, (1600, 960))
 
-level = LevelRendering.Level.load("Levels/Hollow.m2l", 32)
+level = LevelRendering.Level.load("Levels/TEST.m2l", 32)
 
 pt = pygame.image.load("assets/sprites/player/idle_01.png")
 player_tex = pygame.transform.scale2x(pt)
@@ -35,7 +35,7 @@ object_manager = ObjectManager(window.screen)
 
 clock = pygame.time.Clock()
 
-font = pygame.font.Font("assets/fonts/vcr.ttf", 20)
+font = pygame.font.Font("assets/fonts/ComicMono.ttf", 20)
 
 global use_gamepad  # Global Variables? CRINGE!
 joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
@@ -68,8 +68,8 @@ def do_input(controlled_player):
             controlled_player.xvel -= 1
         if key[pygame.K_d]:
             controlled_player.xvel += 1
-        if key[pygame.K_w]:
-            controlled_player.yvel -= 1
+        if key[pygame.K_w] and player.collisions[1]['bottom']:
+            controlled_player.yvel -= 50
         if key[pygame.K_s]:
             controlled_player.yvel += 1
         if key[pygame.K_b]:

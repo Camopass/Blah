@@ -1,6 +1,7 @@
 import pygame
 
 from Engine.Entity import Entity
+from Engine.Entity.Animations import Animation
 from Engine.Physics import level_as_rect_list, rect_tile_collide, debug_rect
 
 
@@ -11,7 +12,20 @@ class Player(Entity):
         self.health = 5
         self.level = level
         self.collisions = [[], {'top': False, 'bottom': False, 'left': False, 'right': False}]
-        # self.animation = Animation() # TODO: Add animations you dumbs
+        self.run_animation = Animation('E:/Games/Slime/assets/sprites/player/run.json', 2)
+        self.idle_animation = Animation('E:/Games/Slime/assets/sprites/player/blah.json', 2)
+
+    def get_image(self):
+        if abs(self.xvel) > 0.1:
+            im = self.run_animation.get_image(pygame.time.get_ticks(), (self.xvel) + 0.1)
+        else:
+            im = self.idle_animation.get_image(pygame.time.get_ticks(), (self.xvel) + 0.1)
+        if self.xvel < 0:
+            im = pygame.transform.flip(im, True, False)
+        return im
+
+    def render(self, screen):
+        screen.blit(self.get_image(), (self.x - self.rect.w / 2, self.y - self.rect.h / 2))
 
     def update(self):
         rect_level = level_as_rect_list(self.level, 2, (-self.game_x, -self.game_y))
@@ -50,6 +64,12 @@ class Player(Entity):
 
         self.game_x += (rect.x - self.rect.x)
         self.game_y += (rect.y - self.rect.y)
+
+        if not collision_types['bottom']:
+            self.yvel += 2
+
+        if collision_types['top'] and not collision_types['bottom']:
+            self.yvel *= -0.7
 
         if self.xvel != 0:
             self.xvel *= 0.9
