@@ -318,8 +318,7 @@ def directory_prompt():
 
 
 def main():
-    icon = pygame.image.load('assets/icons/16-hacker.png')
-    window = LevelDesigner(1900, 1007, "Slime Level Designer", icon)
+    window = LevelDesigner(1900, 1007, "Slime Level Designer", 'assets/icons/16-hacker.png')
     grid_size = 32
 
     clock = pygame.time.Clock()

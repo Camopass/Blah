@@ -7,7 +7,6 @@ from DebugScreen import DebugScreen
 from Engine import LevelRendering
 from Engine.EntityManager import EntityManager
 from Engine.ObjectManager import ObjectManager
-from Engine.Physics import collision_ground
 from Engine.UserInterface import Notice, Button
 from Engine.Window import Window
 from Player import Player
@@ -23,9 +22,11 @@ window = Window(1600, 960, "Slimey Man go wee wooo", "assets/icons/16.png")
 bg = pygame.image.load("assets/Backgrounds/Testing.png")
 background = pygame.transform.scale(bg, (1600, 960))
 
+level = LevelRendering.Level.load("Levels/Hollow.m2l", 32)
+
 pt = pygame.image.load("assets/sprites/player/idle_01.png")
 player_tex = pygame.transform.scale2x(pt)
-player = Player(player_tex)
+player = Player(player_tex, level)
 player.x, player.y = 800, 500
 
 entity_manager = EntityManager(window.screen, player)
@@ -75,9 +76,6 @@ def do_input(controlled_player):
             debug_screen.toggle_open()
 
 
-level = LevelRendering.Level.load("Levels/Stuff.m2l", 32)
-
-
 def main():
     while True:
         for event in pygame.event.get():
@@ -114,18 +112,18 @@ def main():
             do_input(player)  # Barf emoji
 
             # We do a little rendering
-            entity_manager.update()
+
             object_manager.update()
             window.screen.blit(background, (0, 0))
             window.screen.blit(pygame.transform.scale2x(level.render()), (-player.game_x, -player.game_y))
             window.render_managers(entity_manager, object_manager)
             debug_screen.render()
             window.screen.blit(font.render(f'FPS: {fps}', False, [255, 255, 255]), (10, 10))
-            pygame.draw.rect(window.screen, (255, 255, 255), player.rect, 2)
 
-            #print(collision_ground(player.rect, level, 2, (-player.game_x, -player.game_y), window))
             # window.screen.blit(ui_im, (500, 300))
             button.render(window.screen)
+
+            entity_manager.update()
 
             window.render()
             pygame.display.update()
