@@ -48,13 +48,13 @@ class Animation:
         self.frames = []
         self.scaling = scaling
 
-        print(self.aa_animation.frames.frames)
         for data in self.aa_animation.frames.frames:
             self.frames.append(data)
 
         self.length = len(self.frames)
 
     def get_image(self, tick, seconds=None):
+        tick /= 60
         if seconds is not None:
             tick /= seconds
         frame = int(tick) % self.length

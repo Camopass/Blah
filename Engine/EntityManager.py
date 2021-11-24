@@ -7,7 +7,7 @@ class EntityManager:
         self.entities = list(entities)
 
     def update(self):
-        for entity in self.entities:
+        for entity in self.get_render_entities():
             entity.update()
 
     def get_render_entities(self):

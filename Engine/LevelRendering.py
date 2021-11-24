@@ -1,5 +1,6 @@
 import pygame
 import json
+import numpy as np
 
 from Engine.util import encode_image, decode_image
 
@@ -14,7 +15,7 @@ class Level:
                            2: encode_image(self.piece_dict[2])}
         self.length = length
         self.height = height
-        self.floor_pieces = [
+        self.floor_pieces = np.array([
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
@@ -30,8 +31,7 @@ class Level:
             0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-
-        ]
+        ])
 
     def render(self):
         surface = pygame.Surface((self.length * self.tile_size, self.height * self.tile_size), pygame.SRCALPHA, 32)
@@ -60,7 +60,7 @@ class Level:
                 continue
             true_data[int(p_id)] = decode_image(item, (grid_size, grid_size))
         l.piece_dict = true_data
-        l.floor_pieces = map_data["LevelData"]
+        l.floor_pieces = np.array(map_data["LevelData"])
         return l
 
     def get_null_tile(self):

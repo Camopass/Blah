@@ -5,7 +5,7 @@ import base64
 
 from Engine.Window import Window
 from Engine.Maths import Vec2
-from tkinter import Tk, filedialog
+from tkinter import Tk, filedialog, simpledialog
 
 global dark_gray
 dark_gray = (25, 25, 35)
@@ -206,24 +206,27 @@ class Level:
         self.image_dict = {0: None, 1: encode_image(self.piece_dict[1]), 2: encode_image(self.piece_dict[2])}
         self.length = length
         self.height = height
-        self.floor_pieces = [
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
-            0, 0, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 0, 0,
-            0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
-            0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
-            0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
-            0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
-            0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
-            0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
-            0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
-            0, 0, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 0, 0,
-            0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        if length == 25 and height == 15:
+            self.floor_pieces = [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+                0, 0, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 0, 0,
+                0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+                0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+                0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+                0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+                0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+                0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+                0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+                0, 0, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 0, 0,
+                0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
-        ]
+            ]
+        else:
+            self.floor_pieces = [0 for _ in range(length * height)]
 
 
 class LevelDesigner(Window):
@@ -429,6 +432,19 @@ def main():
     edit_button.on_click = open_edit_dialog
     window.buttons.append(edit_button)
 
+    new_button = Button(140, 0, 45, 25, 'new', 'New')
+
+    def new_level(new_level_window: Window):
+        width = simpledialog.askinteger(title="Level Width", prompt="How wide is the level?")
+        height = simpledialog.askinteger(title="Level Height", prompt="How high is the level?")
+        name = simpledialog.askstring(title="Level Name", prompt="What is the level name?")
+        tile_size = simpledialog.askinteger("Tile Size", prompt="How many pixels wide are the tiles?")
+        level = Level(name, width, height, tile_size)
+        new_level_window.level = level
+
+    new_button.on_click = new_level
+    window.buttons.append(new_button)
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -470,6 +486,7 @@ def main():
         window.screen.blit(font.render('SAVE', True, (255, 255, 255)), (5, 3))
         window.screen.blit(font.render('LOAD', True, (255, 255, 255)), (50, 3))
         window.screen.blit(font.render('EDIT', True, (255, 255, 255)), (95, 3))
+        window.screen.blit(font.render('NEW', True, (255, 255, 255)), (140, 3))
         pygame.draw.rect(window.screen, light_gray,
                          (0, window.screen.get_height() - 25, window.screen.get_width(), 25))
         window.screen.blit(font.render(
@@ -493,6 +510,11 @@ def main():
                 i = pygame.image.load('assets/Tiles/EraserIcon.png').convert_alpha()
             window.screen.blit(i, (10, 85 * ind + 30))
             window.screen.blit(font.render(str(pid), True, (255, 255, 255)), (10, 85 * ind + 95))
+
+        pygame.draw.rect(viewport, (255, 255, 255), pygame.Rect(window.get_offset().x * window.view_zoom,
+                                                                window.get_offset().y * window.view_zoom,
+                                                                window.level.length * grid_size * window.view_zoom,
+                                                                window.level.height * grid_size * window.view_zoom), 3)
 
         window.screen.blit(viewport, (window.screen.get_width() - viewport.get_width(), 25))
 

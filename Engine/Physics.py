@@ -1,5 +1,4 @@
 import math
-
 import pygame
 
 from Engine.LevelRendering import Level
@@ -29,6 +28,12 @@ def level_as_rect_list(level, scaling, pos):
         xy = (i % level.length, i // level.length)
         rects.append((pygame.Rect(xy[0] * tile_size + pos[0], xy[1] * tile_size + pos[1], tile_size, tile_size), tile))
     return rects
+
+
+def tile_index_to_rect(pos: int, level: Level, scaling: float, lpos: tuple):
+    xy = ((pos % level.length) * scaling, int(pos // level.length) * scaling)
+    sp = (xy[0] + lpos[0], xy[1] + lpos[1])
+    return pygame.Rect(*sp, level.tile_size * scaling, level.tile_size * scaling)
 
 
 def rect_tile_collide(rect, tiles):

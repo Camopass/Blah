@@ -139,32 +139,33 @@ class BaseButton:
     def get_image(self):
         return self.image
 
-    def render(self, surface):
-        surface.blit(self.get_image(), (self.x, self.y))
+    def render(self):
+        return self.get_image()
 
 
 class Button(BaseButton):
-    def __init__(self, rect, image, hovered_image, font, window, text=None):
+    def __init__(self, rect, image, hovered_image, font, window, text=None, padding=3):
         self.text = text
         self.hovered_image = hovered_image
         super().__init__(rect, image)
         self.font = font
         self.window = window
+        self.padding = padding
 
     @classmethod
-    def uie_button(cls, image, length, x, y, width, height, hovered_image, font, window, *, scaling=False, text=None):
+    def uie_button(cls, image, length, x, y, width, height, hovered_image, font, window, *, scaling=False, text=None, padding=3):
         image = UIElement(image, length).render(width, height, scaling=scaling)
         h_im = UIElement(hovered_image, length).render(width, height, scaling=scaling)
-        return cls(pygame.Rect(x, y, image.get_width(), image.get_height()), image, h_im, font, window, text=text)
+        return cls(pygame.Rect(x, y, image.get_width(), image.get_height()), image, h_im, font, window, text=text, padding=padding)
 
     def get_image(self):
-        #if self.rect.collidepoint(self.window.get_mouse_pos()):
-        #    return self.hovered_image
-        #else:
-        #    return self.image
-        return self.image
+        if self.rect.collidepoint(self.window.get_mouse_pos()):
+            return self.hovered_image
+        else:
+            return self.image
 
-    def render(self, surface):
+    def render(self):
         im = self.get_image()
-        im.blit(render_text_in_rect(self.font, self.text, (im.get_width(), im.get_height())), (0, 0))
+        text = render_text_in_rect(self.font, self.text, (im.get_width() - self.padding, im.get_height() - self.padding))
+        im.blit(text, ((im.get_width() - (text.get_width())), (im.get_height() - (text.get_height()))))
         return im
