@@ -29,4 +29,38 @@ Scaling determines what it should upscale the image by. The return will be a pyg
 # Notice
 > A notice is a UIElement with text.
 
-# I WILL FINISH THIS TOMORROW
+> `def __init__(self, image, length, text):`
+> **image** is the image used to create the background. This is the same as in `UIElement`.
+> **length** is also the same as in `UIElement`.
+> **text** is the text rendered in the notice.
+
+```
+notice = Notice(image, 30, "Hello, World!")
+
+...
+
+window.screen.blit(notice.render(5, 3, font, scaling=10)
+```
+
+# Base Button
+> Base button is a button class that is used to create simple buttons.
+> There is no manager yet, examples for a basic one will be shown below.
+> `def __init__(self, rect, image):`
+> **rect** is a `pygame.Rect` that describes the position and size of the button.
+> **image** is the `pygame.Surface` that is displayed.
+```
+button = BaseButton(pygame.Rect(20, 50, 60, 40), image)
+
+def on_click(window):
+    print("Button Pressed!")
+
+button.on_click = on_click
+
+# Detecting Clicks
+
+def mouse_up(self, button):
+    if button == pygame.BUTTON_LEFT:
+        for button in self.buttons:
+            if button.rect.collidepoint(self.window.get_mouse_pos()):
+                button.on_click(self.window)
+```
