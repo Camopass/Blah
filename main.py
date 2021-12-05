@@ -2,6 +2,8 @@ import datetime
 import logging
 import os
 import time
+import traceback
+import sys
 
 import pygame
 
@@ -11,6 +13,9 @@ from TitleScreen import TitleScreen
 pygame.init()
 
 pygame.joystick.init()
+
+if not pygame.mixer.get_init():
+    pygame.mixer.init()
 
 player_level = ()
 
@@ -60,7 +65,7 @@ def main():
                         if event.button == pygame.BUTTON_LEFT:
                             window.left_click = True
                         window.mouse_down(event.button)
-                        scene.mouse_up(event.button)
+                        scene.mouse_down(event.button)
                     if event.type == pygame.MOUSEBUTTONUP:
                         if event.button == pygame.BUTTON_RIGHT:
                             window.right_click = False
@@ -75,19 +80,32 @@ def main():
                             dir = os.environ["USERPROFILE"] + f"/Desktop/{datetime.date.today()}.png"
                             pygame.image.save(window.screen, dir)
 
-            scene.tick()
+            with Profiler("Tick"):
+                try:
+                    scene.tick()
+                except Exception as e:
+                    traceback.print_exc()
+                    print(e)
 
             if scene.next_scene is not None:
-                scene = scene.next_scene
+                s = scene.next_scene
+                del scene
+                scene = s
 
-            if pygame.mouse.get_focused():
-                scene.render()
+            #if pygame.mouse.get_focused():
+            with Profiler("Rendering"):
+                try:
+                    scene.render()
+                except Exception as e:
+                    traceback.print_exc()
+                    print(e)
                 # pygame.draw.rect(window.screen, (255, 255, 255), player.rect, 3)
                 window.render()
                 pygame.display.update()
 
-            # clock.tick(60)
-            clock.tick(6000)
+            clock.tick(60)
+            # clock.tick(6000)
+    sys.exit()
 
 
 if __name__ == '__main__':

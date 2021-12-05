@@ -1,10 +1,10 @@
-### Compass Engine
+# Compass Engine
 
 > Compass Engine, a game framework made in Python and Pygame designed for Blah.
 > Compass Engine has many helpful features such as the Window class. 
 
 
-# Windows in Compass Engine
+### Windows in Compass Engine
 
 > `def __init__(self, width, height, caption: str = "PyGame Engine", icon_path=None):`
 > 
@@ -40,7 +40,7 @@ From this, you would simply use this like a normal pygame application.
 **Entity and Object managers**
 > Entity Managers will be explained later, but when you are using them, you can use `window.render_managers()` to render them to the **screen**.
 
-# Scenes in Compass Engine
+### Scenes in Compass Engine
 > Scenes are a nice way to contain different areas of your game. This is most likely to be used for things like a Title Screen and the Main Game.
 > Scenes allow you to have different rendering, tick, and setup methods.
 > While these are mostly nonfunctional, it is nice to separate them.
@@ -67,7 +67,7 @@ class TitleScreen(Scene):
 scene = TitleScreen(window, clock)
 ```
 
-# EXAMPLE OF EVENT LOOP
+### EXAMPLE OF EVENT LOOP
 
 This stuff must be done manually.
 
@@ -77,10 +77,10 @@ for event in pygame.event.get():
         pygame.quit()
         p.close()
         running = False
-    if event.type == pygame.VIDEORESIZE:  # We do a little resizing
+    if event.type == pygame.VIDEORESIZE:
         window.window_surface = pygame.display.set_mode(size=(event.w, event.h), flags=pygame.RESIZABLE)
-        window.update_resize()  # Set the scaling of the window screen
-    if event.type == pygame.MOUSEBUTTONDOWN:  # Mouse moment
+        window.update_resize()
+    if event.type == pygame.MOUSEBUTTONDOWN:
         if event.button == pygame.BUTTON_RIGHT:
             window.right_click = True
         if event.button == pygame.BUTTON_LEFT:

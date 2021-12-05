@@ -1,8 +1,18 @@
 import pygame
 
+from pygame import mixer
+
 from Engine.Entity import Entity
+from Engine.Entity.AnimationManager import AnimationManager, AnimationState
 from Engine.Entity.Animations import Animation
 from Engine.Physics import level_as_rect_list, rect_tile_collide
+
+if not pygame.mixer.get_init():
+    pygame.mixer.init()
+
+mixer.set_num_channels(8)
+
+land_snd = mixer.Sound("assets/Sounds/Blah/land.wav")
 
 
 class Player(Entity):
@@ -12,15 +22,13 @@ class Player(Entity):
         self.health = 5
         self.level = level
         self.collisions = [[], {'top': False, 'bottom': False, 'left': False, 'right': False}]
-        self.run_animation = Animation('E:/Games/Slime/assets/sprites/player/run.json', 2)
-        self.idle_animation = Animation('E:/Games/Slime/assets/sprites/player/blah.json', 2)
+        self.run_state = AnimationState(Animation('E:/Games/Slime/assets/sprites/player/run.json', 2), 'run')
+        self.idle_state = AnimationState(Animation('E:/Games/Slime/assets/sprites/player/blah.json', 2), 'idle')
+        self.animation_manager = AnimationManager(self.idle_state, self.run_state, self.idle_state)
         self.last_ticks = pygame.time.get_ticks()
 
     def get_image(self):
-        if abs(self.xvel) > 0.1:
-            im = self.run_animation.get_image(pygame.time.get_ticks(), (1))
-        else:
-            im = self.idle_animation.get_image(pygame.time.get_ticks(), (11 - abs(self.xvel + 0.01)))
+        im = self.animation_manager.get_frame()
         if self.xvel < 0:
             im = pygame.transform.flip(im, True, False)
         return im
@@ -33,6 +41,8 @@ class Player(Entity):
 
         collision_types = {'top': False, 'bottom': False, 'left': False, 'right': False}
         collided_rects = []
+
+
 
         rect = self.rect.copy()
 
@@ -69,6 +79,9 @@ class Player(Entity):
 
         if not collision_types['bottom']:
             self.yvel += 2
+
+        if collision_types['bottom'] and self.yvel > 16:
+            land_snd.play()
 
         if collision_types['top'] and not collision_types['bottom']:
             self.yvel = (self.yvel + 0.1) * -0.7

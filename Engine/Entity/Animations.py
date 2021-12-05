@@ -53,11 +53,7 @@ class Animation:
 
         self.length = len(self.frames)
 
-    def get_image(self, tick, seconds=None):
-        tick /= 60
-        if seconds is not None:
-            tick /= seconds
-        frame = int(tick) % self.length
+    def get_image(self, frame):
         frame = self.frames[int(frame)]
 
         if not frame.rotated:

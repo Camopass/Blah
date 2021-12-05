@@ -1,8 +1,9 @@
 import pygame
 import typing
+import re
 
 
-def render_text_in_rect(font: pygame.font.Font, text: str, dim: typing.Tuple[int, int], *, line_spacing=3, color=(255, 255, 255)):
+def render_text_in_rect(font: pygame.font.Font, text: str, dim: typing.Tuple[int, int], *, line_spacing=3, color=(255, 255, 255)) -> pygame.Surface:
     """Render text inside a rect. This auto wraps the text."""
     surf = pygame.Surface((dim[0], dim[1]), flags=pygame.SRCALPHA)
     y = 0
@@ -26,7 +27,7 @@ class UIElement:
     Examples:
 
         ui = UIElement(image, 30)
-        pygame.display.blit(image, [200, 500])
+        pygame.display.blit(ui.render(3, 5), [200, 500])
 
     """
     def __init__(self, image, length):
@@ -89,7 +90,7 @@ class BaseButton:
     """
     A button class. TODO: Fix buttons you idiot.
     """
-    def __init__(self, rect, image):
+    def __init__(self, rect: pygame.Rect, image: pygame.Surface):
         self._rect = rect
         self.image = image
         self.hovered = False
@@ -101,7 +102,7 @@ class BaseButton:
         return self._rect
 
     @rect.setter
-    def rect(self, rect):
+    def rect(self, rect: pygame.Rect):
         self._rect = rect
         self._x = rect.x
         self._y = rect.y
@@ -111,7 +112,7 @@ class BaseButton:
         return self._x
 
     @x.setter
-    def x(self, x):
+    def x(self, x: typing.Union[int, float]):
         self._x = x
         self._rect.x = x
 
@@ -120,12 +121,13 @@ class BaseButton:
         return self._y
 
     @y.setter
-    def y(self, y):
+    def y(self, y: typing.Union[int, float]):
         self._y = y
         self._rect.y = y
 
     @classmethod
-    def uie_button(cls, image, length, x, y, width, height, scaling=False):
+    def uie_button(cls, image: pygame.Surface, length: int, x: typing.Union[int, float], y: typing.Union[int, float],
+                   width: typing.Union[int, float], height: typing.Union[int, float], scaling=False):
         """Create a button with a UI Element texture."""
         image = UIElement(image, length).render(width, height, scaling=scaling)
         return cls(pygame.Rect(x, y, image.get_width(), image.get_height()), image)
@@ -144,6 +146,9 @@ class BaseButton:
 
 
 class Button(BaseButton):
+    """
+    A general purpose button class.
+    """
     def __init__(self, rect, image, hovered_image, font, window, text=None, padding=3):
         self.text = text
         self.hovered_image = hovered_image
@@ -169,3 +174,22 @@ class Button(BaseButton):
         text = render_text_in_rect(self.font, self.text, (im.get_width() - self.padding, im.get_height() - self.padding))
         im.blit(text, ((im.get_width() - (text.get_width())), (im.get_height() - (text.get_height()))))
         return im
+
+
+class Menu:
+    """
+    WIP
+
+    Not finished yet.
+    """
+    def __init__(self):
+        self.buttons = []
+        self.text = ""
+        self.images = []
+        self.rect = self.get_rect()
+
+    # def get_rect(self):
+    #     for i in
+
+    # def render(self):
+    #

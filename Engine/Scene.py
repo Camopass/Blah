@@ -1,5 +1,6 @@
 """Base class for scenes. Setup is setup, tick does game updates, and render renders. Close is called before a new
 scene is created. """
+import pygame
 
 
 class Scene:
@@ -26,4 +27,7 @@ class Scene:
         pass
 
     def mouse_up(self, button):
+        pass
+
+    def events(self, event: pygame.event.Event):
         pass
