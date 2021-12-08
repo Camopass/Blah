@@ -1,6 +1,6 @@
 import pygame
 from pygame import mixer
-//nigga
+// no slurs in the comments please
 from Engine.Scene import Scene
 from Engine import LevelRendering
 from Engine.EntityManager import EntityManager
