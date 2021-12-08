@@ -6,3 +6,5 @@ It is very much in development still.
 
 Thanks to me (Coolio Beans#1768) for programming and the lovely background, and JamieFailure#3915 for art.
 Fishy7s#9489 is working on a title screen, but has not uploaded anything as of yet.
+
+![BlackPower](https://cdn.discordapp.com/attachments/917115209628409886/918199013667389500/unknown.png)
