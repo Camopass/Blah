@@ -18,8 +18,8 @@ jump_snd = mixer.Sound("assets/Sounds/Blah/jump.wav")
 
 class Game(Scene):
     def setup(self):
-        bg = pygame.image.load("assets/Backgrounds/Testing.png")
-        self.background = pygame.transform.scale(bg, (1600, 960))
+        bg = [pygame.image.load(f"assets/Backgrounds/TestBackground/{b}.png") for b in ['0', '1', '2']]
+        self.background = [pygame.transform.scale2x(pygame.transform.scale2x(b)) for b in bg]
 
         self.level = LevelRendering.Level.load("Levels/Island.m2l", 32)
 
