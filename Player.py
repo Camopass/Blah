@@ -42,7 +42,7 @@ class Player(Entity):
         collision_types = {'top': False, 'bottom': False, 'left': False, 'right': False}
         collided_rects = []
 
-
+//mister monkey! the poeple are rebelling!
 
         rect = self.rect.copy()
 
