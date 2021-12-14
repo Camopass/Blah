@@ -70,7 +70,7 @@ class Game(Scene):
         self.window.screen.blit(self.level_im, (-self.camera_pos[0], -self.camera_pos[1]))
         pos = (self.player.game_x - self.camera_pos[0] + 800, self.player.game_y - self.camera_pos[1] + 480)
         im = self.player.get_image()
-        self.window.screen.blit(im, (pos[0] - im.get_width() / 2, pos[1] - im.get_height() / 2 + 5))
+        self.window.screen.blit(im, (pos[0] - self.player.rect.w / 2 - 35, pos[1] - self.player.rect.h / 2))
         # self.window.screen.blit(self.particles.render(), (-self.player.game_x, -(self.player.game_y + 480)))
         try:
             self.window.screen.blit(self.font.render(f'FPS: {fps}', False, [255, 255, 255]), (10, 10))
