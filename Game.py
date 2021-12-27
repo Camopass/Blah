@@ -2,8 +2,6 @@ import pygame
 from pygame import mixer
 from Engine.Scene import Scene
 from Engine import LevelRendering
-from Engine.EntityManager import EntityManager
-from Engine.ObjectManager import ObjectManager
 from Particles import Particles
 
 from Player import Player
@@ -13,6 +11,11 @@ if not pygame.mixer.get_init():
     pygame.mixer.init()
 
 jump_snd = mixer.Sound("assets/Sounds/Blah/jump.wav")
+
+
+def get_screen_rect(camera_pos):
+    surf = pygame.display.get_surface()
+    return pygame.Rect(*camera_pos, surf.get_width(), surf.get_height())
 
 
 class Game(Scene):
@@ -55,7 +58,7 @@ class Game(Scene):
 
     def tick(self):
         self.do_input()  # Barf emoji
-        # self.particles.tick()
+        self.particles.tick()
         self.player.update()
         self.camera_pos[0] += (self.player.game_x - self.camera_pos[0]) / 8
         self.camera_pos[1] += (self.player.game_y - self.camera_pos[1]) / 8
@@ -64,14 +67,20 @@ class Game(Scene):
     def render(self):
         self.window.screen.fill((0, 0, 0))
         fps = round(self.clock.get_fps())
+        # Background
         self.window.screen.blit(self.background[0], (0, 0))
-        self.window.screen.blit(self.background[1], ((self.camera_pos[0] + 1600) * -0.2, (self.camera_pos[1] + 960) * -0.2))
+        # Layer 0
+        pos = ((self.camera_pos[0] + 1600) * -0.2, (self.camera_pos[1] + 960) * -0.2)
+        self.window.screen.blit(self.background[1], pos)
+
+        # Layer 1
         self.window.screen.blit(self.background[2], ((self.camera_pos[0] + 800) * -0.5, (self.camera_pos[1] + 1600) * -0.2))
+        # Front Layer
         self.window.screen.blit(self.level_im, (-self.camera_pos[0], -self.camera_pos[1]))
         pos = (self.player.game_x - self.camera_pos[0] + 800, self.player.game_y - self.camera_pos[1] + 480)
         im = self.player.get_image()
         self.window.screen.blit(im, (pos[0] - self.player.rect.w / 2 - 35, pos[1] - self.player.rect.h / 2))
-        # self.window.screen.blit(self.particles.render(), (-self.player.game_x, -(self.player.game_y + 480)))
+        self.particles.render(self.window.screen, get_screen_rect(self.camera_pos))
         try:
             self.window.screen.blit(self.font.render(f'FPS: {fps}', False, [255, 255, 255]), (10, 10))
         except pygame.error:

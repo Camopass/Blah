@@ -48,14 +48,11 @@ class Particles:
         for i, particle in enumerate(self.particles):
             update(particle, self.dimensions)
 
-    def render(self):
-        surface = pygame.Surface(self.dimensions, pygame.SRCALPHA)
-
+    def render(self, surface: pygame.Surface, screen_rect: pygame.Rect):
         for particle in self.particles:
-            if particle[3] == 0:
-                surface.blit(self.images[particle[0]], particle[1:3])
-            else:
-                im = pygame.transform.rotate(self.images[particle[0]], particle[3])
-                surface.blit(im, particle[1:3])
-
-        return surface
+            if screen_rect.collidepoint(particle[1:3]):
+                if particle[3] == 0:
+                    surface.blit(self.images[particle[0]], (particle[1] - screen_rect.x, particle[2] - screen_rect.y))
+                else:
+                    im = pygame.transform.rotate(self.images[particle[0]], particle[3])
+                    surface.blit(im, (particle[1]-+ screen_rect.x, particle[2] - screen_rect.y))

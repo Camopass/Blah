@@ -26,6 +26,8 @@ class TitleScreen(Scene):
 
         play_button.on_click = on_click
         self.buttons = [play_button]
+        self.music = pygame.mixer.music.load('assets/Music/Menu.ogg')
+        pygame.mixer.music.play(0)
 
     def tick(self):
         # self.particles.tick()
